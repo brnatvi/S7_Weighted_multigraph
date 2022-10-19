@@ -11,8 +11,8 @@ class Graph {
     private :
         static int counterGraphs;
         int id;
-        list<Arete*> listAretes;
-        list<Sommet*> listSommets;
+        list<Arete*> *listAretes;
+        list<Sommet*> *listSommets;
         int nbReference;
 
     public :
@@ -20,8 +20,22 @@ class Graph {
         Graph(Graph *oldGraph);        
 
         int getId();
-        list<Arete*> getAretes();
-        list<Sommet*> getSommets();
+        list<Arete*> * getAretes();
+        void setAretes(list<Arete*> *list);
+        list<Sommet*> * getSommets();                
+        void setSommets(list<Sommet*> *list);
+                                        
+        // étant donné soit un sommet existant, soit une étiquette, crée
+        // le sommet dans ce dernier cas et ajoute le sommet au graphe ;
+        void ajoute_sommet(Sommet *s);  
+        void ajoute_sommet(string nom);  
+                                                            
+        // étant donné soit une arête existante, soit deux sommets existants et un poids, 
+        // soit deux étiquettes et un poids, crée les sommets et l’arête si nécessaire et les ajoute au graphe ;
+        void ajoute_arete(Arete *a);                        
+        void ajoute_arete(Sommet *s1, Sommet *s2, int p); 
+        void ajoute_arete(string nom1, string nom2, int p); 
+                               
         void symmetrise();
 };
 

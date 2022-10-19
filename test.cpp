@@ -29,8 +29,20 @@ int main(){
     listSomm.push_back(&z);
     listSomm.push_back(&z1);
     listSomm.push_back(&z2);
-    listSomm.push_back(&z3);
+
 
     Graph g1{&listAr, &listSomm};
     cout << g1 << endl;
+
+    Graph g2{&g1};
+    cout << g2 << endl; 
+
+    g2.ajoute_arete(&z1, &z2, 32);
+    cout << g2 << endl;
+
+    g2.ajoute_sommet(&z3);
+    cout << g2 << endl;
+    
+   // g1.symmetrise();
+   // cout << g2 << endl;
 }
