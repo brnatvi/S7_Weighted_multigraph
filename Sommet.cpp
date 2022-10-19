@@ -1,29 +1,33 @@
-#include "Sommet.h"
+#include "Sommet.hpp"
 
-int Sommet::identifiant(){
-    static int counter = 0 ;
-    return ++counter ;
+
+// counterGraph initialisation
+int Sommet::counterSommets = 0;
+
+// constructors
+Sommet::Sommet(string nom) : nom{nom} { 
+    this->id = ++counterSommets;
+    this->nbReference = 0;
 }
-
-Sommet::Sommet(string nom) : _id(identifiant()), _nom(nom) { }
 
 Sommet::Sommet(Sommet *s) {
     *this = s;
 }
 
-void incrReference(){
+// setters/getters
+int Sommet::getId() { return id; }
+std::string Sommet::getNom() { return nom; }
+void Sommet::setNom(string nom) { nom = nom; }
+int Sommet::getNbReference() { return nbReference; }
+void Sommet::setNbReference(int nbRef) { nbReference = nbRef; }
+
+/*
+void Sommet::incrReference(){
     setRef(getRef()++);
 }
 
-void decrReference(){
+void Sommet::decrReference(){
     setRef(getRef()--);
 }
+*/
 
-int main(){
-    Sommet s("A");
-    cout << s.getName() << endl;
-    cout << s.getId() << endl;
-    Sommet z("B");
-    cout << z.getName() << endl;
-    cout << z.getId() << endl;
-}
