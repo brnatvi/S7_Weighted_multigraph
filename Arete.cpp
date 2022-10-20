@@ -5,10 +5,10 @@ int Arete::counterArete = 0;
 
 // constructors
 Arete::Arete(string nom1, string nom2, int poids) {
-    Sommet new1 = new Sommet(nom1);
-    Sommet new2 = new Sommet(nom2);
-    this->sommet1 = &new1;
-    this->sommet2 = &new2;
+    Sommet *new1 = new Sommet(nom1);
+    Sommet *new2 = new Sommet(nom2);
+    this->sommet1 = new1;
+    this->sommet2 = new2;
     this->poids = poids;    
     this->nbReference = 0;
     counterArete ++;
@@ -22,32 +22,27 @@ Arete::Arete(Sommet *s1, Sommet *s2, int poids){
     counterArete ++;
 }
 
-
-
-// TODO question: is it constructor by copy ?
+// TODO question: is it works well ?
 Arete::Arete(Arete *a) {
     *this = a;
 }
 
 // getters/setters
-int Arete::getPoids() { return poids; }
-int Arete::getRef() { return nbReference; }
+int Arete::getPoids() const { return poids; }
+int Arete::getRef() const { return nbReference; }
 void Arete::setPoids(int poids) { poids = poids; }
 void Arete::setRef(int nbRef) { nbReference = nbRef; }
 
-std::list<Sommet> Arete::getSommets() {
-            std::list<Sommet> sommets;  
-            sommets.push_back(*this->sommet1);     
-            sommets.push_back(*this->sommet2);
-            return sommets;
-        }
-
+Arete::Pair Arete::getSommetsPair() const
+{
+    return {this->sommet1, this->sommet2};
+}
 
 // print
 ostream &operator << (ostream &out, Arete &x)
 {     
-    std::list<Sommet> sommets = x.getSommets();
-    cout << "arete " << sommets.front().getNom() << " - " << sommets.back().getNom() << " ayant poids = " << x.getPoids();    
+    Arete::Pair sommets = x.getSommetsPair();
+    cout << "arete " << sommets.sommet1 << " - " << sommets.sommet2 << " ayant poids = " << x.getPoids();    
     return out;    
 };
 

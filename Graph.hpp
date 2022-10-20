@@ -2,6 +2,7 @@
 #define GRAPH_H
 
 #include <iostream>
+#include <cstring>  // for memcpy
 #include "Arete.hpp"
 
 using namespace std;
@@ -15,14 +16,16 @@ class Graph {
         list<Sommet*> *listSommets;
         int nbReference;
 
+        void cloneList(list<Arete *> *src, list<Arete *> *dest);
+
     public :
         Graph(list<Arete *> *listAretes, list<Sommet *> *listSommets);
         Graph(Graph *oldGraph);        
 
-        int getId();
-        list<Arete*> * getAretes();
-        void setAretes(list<Arete*> *list);
-        list<Sommet*> * getSommets();                
+        int getId() const;
+        list<Arete*> * getAretes() const;
+        list<Sommet*> * getSommets() const; 
+        void setAretes(list<Arete*> *list);                       
         void setSommets(list<Sommet*> *list);
                                         
         // étant donné soit un sommet existant, soit une étiquette, crée
