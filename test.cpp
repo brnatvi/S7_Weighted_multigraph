@@ -16,7 +16,8 @@ int main(){
     cout << ar1 << endl;  
     Arete ar2 {&s, &z1, 8};
     Arete ar3 {&z1, &z2, 5};
-    Arete ar4 {&z2, &z3, 9};  
+    Arete ar4 {&z2, &z3, 9}; 
+    Arete ar5 {&z3, &s, 3}; 
 
     list<Arete*> listAr = {};
     listAr.push_back(&ar1);
@@ -37,11 +38,16 @@ int main(){
     Graph g2{&g1};
     cout << g2 << endl; 
 
-    g2.ajoute_arete(&z1, &z2, 32);
+    g2.ajoute_arete(&ar5);
     cout << g2 << endl;
 
-    g2.ajoute_sommet(&z3);
+    g2.ajoute_arete(&ar5);
     cout << g2 << endl;
+
+    g2.ajoute_arete(&ar5);
+    cout << g2 << endl;
+
+    cout << "poids du graphe: " << g2.poids() << endl;
     
    // g1.symmetrise();
    // cout << g2 << endl;

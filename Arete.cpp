@@ -36,11 +36,11 @@ void Arete::setPoids(int poids) { poids = poids; }
 void Arete::setRef(int nbRef) { nbReference = nbRef; }
 
 std::list<Sommet> Arete::getSommets() {
-            std::list<Sommet> sommets;  
-            sommets.push_back(*this->sommet1);     
-            sommets.push_back(*this->sommet2);
-            return sommets;
-        }
+    std::list<Sommet> sommets;  
+    sommets.push_back(*this->sommet1);     
+    sommets.push_back(*this->sommet2);
+    return sommets;
+}
 
 
 // print

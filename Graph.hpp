@@ -34,7 +34,10 @@ class Graph {
         // soit deux étiquettes et un poids, crée les sommets et l’arête si nécessaire et les ajoute au graphe ;
         void ajoute_arete(Arete *a);                        
         void ajoute_arete(Sommet *s1, Sommet *s2, int p); 
-        void ajoute_arete(string nom1, string nom2, int p); 
+        void ajoute_arete(string nom1, string nom2, int p);
+
+        // retourne le poids de G, soit la somme des poids de ses aretes
+        int poids(); 
                                
         void symmetrise();
 };

@@ -48,6 +48,7 @@ void Graph::setSommets(list<Sommet*> *l)
 
 // methods
 
+// verification pour eviter d'ajouter un sommet deja present dans la liste
 void Graph::ajoute_sommet(Sommet *s)
 {        
     list<Sommet*> *l = this->getSommets();
@@ -61,20 +62,13 @@ void Graph::ajoute_sommet(Sommet *s)
     this->getSommets()->push_back(s);
 } 
 
-void Graph::ajoute_sommet(string nom)
-{
-    list<Sommet*> *l = this->getSommets();
-    for (Sommet *el : *l)
-    {
-        if (el->getNom().compare(nom) == 0) 
-        {
-            return;
-        }        
-    }
+// pas de verification dans liste des sommets car nom d'un sommet n'est pas un identifiant
+void Graph::ajoute_sommet(string nom) {  
     Sommet *newOne = new Sommet(nom);
     this->getSommets()->push_back(newOne);
 } 
-                                                            
+
+// verification pour eviter d'ajouter une arete deja presente dans la liste                                                           
 void Graph::ajoute_arete(Arete *a)
 {
     list<Arete*> *l = this->getAretes();
@@ -88,48 +82,28 @@ void Graph::ajoute_arete(Arete *a)
     this->getAretes()->push_back(a);
 }
 
-void Graph::ajoute_arete(Sommet *s1, Sommet *s2, int p)
-{   
-    list<Sommet*> *l = this->getSommets();
-    bool found1 = false;
-    bool found2 = false;
-    // check if s1 and s2 are in listAretes
-    for (Sommet *el : *l)
-    {
-        if (el == s1) 
-        {
-            found1 = true;
-        }
-        else if (el == s2)
-        {
-            found2 = true;    
-        }
-    }
-    if (!found1 && !found2)
-    {                      
-        // create Arete and add to graph
-        Arete *newOne = new Arete(s1, s2, p);
-        this->getAretes()->push_back(newOne);
-    }
-    else 
-    {    
-        if (found1 && found2)                    
-        {
-            // TODO
-            // take Arete with s1 and s2 and check if Arete.poids == p
-        }
-        else
-        {
-            Arete *anotherOne = new Arete(s1, s2, p);
-            this->getAretes()->push_back(anotherOne);
-        }
-    }
-
+// "Il peut y avoir plusieurs aretes (chacune avec son poids propre) avec les memes extremites" => pas besoin de verification dans liste aretes
+void Graph::ajoute_arete(Sommet *s1, Sommet *s2, int p){  
+    Arete *a = new Arete(s1, s2, p);
+    this->getAretes()->push_back(a);  
 }
 
-void Graph::ajoute_arete(string nom1, string nom2, int poids)
-{
-    // TODO
+void Graph::ajoute_arete(string nom1, string nom2, int poids) {
+    Sommet *s1 = new Sommet(nom1);
+    Sommet *s2 = new Sommet(nom2);
+    ajoute_sommet(s1);
+    ajoute_sommet(s2);
+    Arete *a = new Arete(s1, s2, poids);
+    this->getAretes()->push_back(a);
+}
+
+int Graph::poids(){
+    list<Arete*> *l = this->getAretes();
+    int p = 0;
+    for(Arete* el: *l){
+        p += el->getPoids();
+    }
+    return p;
 }
 
 void Graph::symmetrise()
