@@ -106,6 +106,25 @@ int Graph::poids(){
     return p;
 }
 
+bool Graph::hasAreteSym(Arete *a){
+    list<Arete*> *aretes = this->getAretes();
+    for(Arete* el: *aretes){
+        if(&el->getSommets().front() == &a->getSommets().back() && 
+        &el->getSommets().back() == &a->getSommets().front() &&
+        el->getPoids() == a->getPoids()){
+            return true;
+        }
+    }
+    return false;
+}
+
+void Graph::symetrise(){
+    list<Arete*> *aretes = this->getAretes();
+    list<Arete*> newListAretes = {};
+    cout << aretes << endl;
+    cout << this->getAretes() << endl;
+}
+/*
 void Graph::symmetrise()
 {
     list<Arete *> *aretes = this->getAretes();
@@ -140,6 +159,7 @@ void Graph::symmetrise()
     }    
     this->setAretes(&newAretes);
 };
+*/
 
 // print
 ostream &operator << (ostream &out, Graph &x)

@@ -49,6 +49,6 @@ int main(){
 
     cout << "poids du graphe: " << g2.poids() << endl;
     
-   // g1.symmetrise();
-   // cout << g2 << endl;
+   g1.symetrise();
+   cout << g1 << endl;
 }

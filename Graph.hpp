@@ -38,8 +38,9 @@ class Graph {
 
         // retourne le poids de G, soit la somme des poids de ses aretes
         int poids(); 
-                               
-        void symmetrise();
+
+        bool hasAreteSym(Arete *a);             
+        void symetrise();
 };
 
 ostream &operator << (ostream &out, Graph &x);
