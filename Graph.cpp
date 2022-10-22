@@ -21,27 +21,19 @@ Graph::Graph(Graph *oldGraph)
 
 // getters/setters
 
-int Graph::getId(){ return this->id; }   
-list<Arete*> * Graph::getAretes(){ return this->listAretes; }
-list<Sommet*> * Graph::getSommets(){ return this->listSommets; }
+int Graph::getId() const { return this->id; }   
+list<Arete*> * Graph::getAretes() const { return this->listAretes; }
+list<Sommet*> * Graph::getSommets() const { return this->listSommets; }
 
 void Graph::setAretes(list<Arete*> *l) 
 {
-/*    while(!this->listAretes.empty()) 
-    {
-        delete (this->listAretes.front());
-    }
- */   
+    // TODO destroy old listAretes ?
     this->listAretes = l;    
 }
                       
 void Graph::setSommets(list<Sommet*> *l)
 {       
- /*   while(!this->listSommets.empty()) 
-    {
-        delete (this->listAretes.front());
-    }
-  */  
+    // TODO destroy old listSommets ?
     this->listSommets = l;    
 }
 
@@ -91,6 +83,7 @@ void Graph::ajoute_arete(Sommet *s1, Sommet *s2, int p){
 void Graph::ajoute_arete(string nom1, string nom2, int poids) {
     Sommet *s1 = new Sommet(nom1);
     Sommet *s2 = new Sommet(nom2);
+    // ajoute_sommet verifie deja presence de sommet dans liste
     ajoute_sommet(s1);
     ajoute_sommet(s2);
     Arete *a = new Arete(s1, s2, poids);
@@ -106,60 +99,51 @@ int Graph::poids(){
     return p;
 }
 
-bool Graph::hasAreteSym(Arete *a){
-    list<Arete*> *aretes = this->getAretes();
-    for(Arete* el: *aretes){
-        if(&el->getSommets().front() == &a->getSommets().back() && 
-        &el->getSommets().back() == &a->getSommets().front() &&
-        el->getPoids() == a->getPoids()){
-            return true;
-        }
-    }
-    return false;
+void Graph::cloneList(list<Arete *> *src, list<Arete *> *dest)
+{
+    for (Arete *el : *src)
+    {
+        dest->push_back(el);
+    }    
 }
+
 
 void Graph::symetrise(){
-    list<Arete*> *aretes = this->getAretes();
-    list<Arete*> newListAretes = {};
-    cout << aretes << endl;
-    cout << this->getAretes() << endl;
-}
-/*
-void Graph::symmetrise()
-{
     list<Arete *> *aretes = this->getAretes();
-    list<Arete *> newAretes = {};
-    
-    for (Arete *a1 : *aretes)
-    {
-        std::list<Sommet> sommetsA1 = a1->getSommets();
+    list<Arete *> *newAretes = new list<Arete *>;
+    cloneList(aretes, newAretes);
         
-        std::string firstA1 = sommetsA1.front().getNom();
-        std::string secondA1 = sommetsA1.back().getNom();
+    for (Arete *a1 : *aretes)
+    {        
+        const Sommet* a1S1 = a1->getSommetsPair().sommet1;
+        const Sommet* a1S2 = a1->getSommetsPair().sommet2;
 
-        cout << "first1 = " << firstA1 << "secondA1" << secondA1;
+        cout << "a1S1 = " <<  a1S1->getId() << " a1S2 = " << a1S2->getId() << endl;
     
         for (Arete *a2 : *aretes)
-        {
-            std::list<Sommet> sommetsA2 = a2->getSommets();
-            std::string firstA2 = sommetsA2.front().getNom();
-            std::string secondA2 = sommetsA2.back().getNom();
-            
-            cout << "first2 = " << firstA2 << "secondA2" << secondA2;
+        {            
+            const Sommet* a2S1 = a1->getSommetsPair().sommet1;
+            const Sommet* a2S2 = a1->getSommetsPair().sommet2;
+                        
+            cout << "a2S1 = " << a2S1->getId() << " a2S2 = " << a2S2->getId() << endl;
 
-            if ((firstA1.compare(firstA2) != 0) && (firstA2.compare(firstA1) != 0) && 
-                (a1->getPoids() != a2->getPoids()))
-            {
-                cout << "I've found something new !";
-                Arete newOne = new Arete (firstA2, secondA2, a1->getPoids());
-                newAretes.push_back(&newOne);
-            }
-        }
-                
+            if ((a1S1 == a2S2) 
+             && (a1S2 == a2S1) 
+             && (a1->getPoids() == a2->getPoids()))
+            { // do nothing       
+            }            
+        } 
+        cout << "I've created mirror-arete ! ";                       
+
+        newAretes->push_back(new Arete(a1S2, a1S1, a1->getPoids())); 
+        cout << "newS1 = " << a1S2->getId() 
+             << " newS2 = " << a1S1->getId() 
+             << " poids = " << a1->getPoids() << endl;
+                      
     }    
-    this->setAretes(&newAretes);
+    
+    this->setAretes(newAretes);  
 };
-*/
 
 // print
 ostream &operator << (ostream &out, Graph &x)
@@ -176,8 +160,10 @@ ostream &operator << (ostream &out, Graph &x)
     cout << "et les aretes : " << endl;
     for (Arete *n : *aretes)
     {
-        cout << *n << endl;    
-    }
-    
+        cout << n->getSommetsPair().sommet1->getNom()
+             << " - " << n->getSommetsPair().sommet2->getNom()
+             << " (" << n->getPoids() << ") " << endl;    
+    }    
     return out;    
+   
 }

@@ -17,9 +17,9 @@ class Sommet {
         Sommet(string nom);
         Sommet(Sommet *s);
 
-        int getId();
-        std::string getNom();
-        int getNbReference();
+        int getId() const;
+        string getNom() const; 
+        int getNbReference() const;
         void setNom(string nom);
         void setNbReference(int nbRef);
 
@@ -27,5 +27,7 @@ class Sommet {
 //        int decrReference();
 
 };
+
+ostream &operator << (ostream &out, Sommet &x);
 
 #endif

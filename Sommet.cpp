@@ -15,11 +15,18 @@ Sommet::Sommet(Sommet *s) {
 }
 
 // setters/getters
-int Sommet::getId() { return id; }
-std::string Sommet::getNom() { return nom; }
+int Sommet::getId() const { return id; }
+std::string Sommet::getNom() const { return nom; }
 void Sommet::setNom(string nom) { nom = nom; }
-int Sommet::getNbReference() { return nbReference; }
+int Sommet::getNbReference() const { return nbReference; }
 void Sommet::setNbReference(int nbRef) { nbReference = nbRef; }
+
+// print
+ostream &operator << (ostream &out, Sommet &x) {     
+    cout << "sommet " << x.getNom();    
+    return out;
+
+};
 
 /*
 void Sommet::incrReference(){

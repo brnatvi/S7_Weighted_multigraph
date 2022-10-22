@@ -2,6 +2,7 @@
 #define GRAPH_H
 
 #include <iostream>
+#include <cstring>
 #include "Arete.hpp"
 
 using namespace std;
@@ -19,10 +20,10 @@ class Graph {
         Graph(list<Arete *> *listAretes, list<Sommet *> *listSommets);
         Graph(Graph *oldGraph);        
 
-        int getId();
-        list<Arete*> * getAretes();
+        int getId() const;
+        list<Arete*> * getAretes() const;
+        list<Sommet*> * getSommets() const;                
         void setAretes(list<Arete*> *list);
-        list<Sommet*> * getSommets();                
         void setSommets(list<Sommet*> *list);
                                         
         // étant donné soit un sommet existant, soit une étiquette, crée
@@ -39,7 +40,8 @@ class Graph {
         // retourne le poids de G, soit la somme des poids de ses aretes
         int poids(); 
 
-        bool hasAreteSym(Arete *a);             
+        void cloneList(list<Arete*> *src, list<Arete*> *dest);  
+        
         void symetrise();
 };
 
