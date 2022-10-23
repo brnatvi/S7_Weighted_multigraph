@@ -37,6 +37,7 @@ int Arete::getPoids() const { return poids; }
 int Arete::getRef() const { return nbReference; }
 void Arete::setPoids(int poids) { this->poids = poids; }
 void Arete::setRef(int nbRef) { nbReference = nbRef; }
+int Arete::getCounterAretes() { return counterArete; };
 
 Arete::Pair Arete::getSommetsPair() const {
     

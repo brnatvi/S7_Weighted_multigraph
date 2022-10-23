@@ -18,6 +18,7 @@ class Sommet {
         Sommet(Sommet *s);
 
         int getId() const;
+        static int getCounterSommets();
         string getNom() const; 
         int getNbReference() const;
         void setNom(string nom);

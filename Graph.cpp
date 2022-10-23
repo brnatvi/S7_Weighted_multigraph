@@ -24,6 +24,7 @@ Graph::Graph(Graph *oldGraph)
 int Graph::getId() const { return this->id; }   
 list<Arete*> * Graph::getAretes() const { return this->listAretes; }
 list<Sommet*> * Graph::getSommets() const { return this->listSommets; }
+int Graph::getCounterGraphs() { return counterGraphs; };
 
 void Graph::setAretes(list<Arete*> *l) 
 {
@@ -114,34 +115,30 @@ void Graph::symetrise(){
     list<Arete *> *aretes = this->getAretes();
     list<Arete *> *newAretes = new list<Arete *>;
     cloneList(aretes, newAretes);
+    bool isFound = false;
         
     for (Arete *a1 : *aretes)
     {        
         const Sommet* a1S1 = a1->getSommetsPair().sommet1;
         const Sommet* a1S2 = a1->getSommetsPair().sommet2;
-
-        cout << "a1S1 = " <<  a1S1->getId() << " a1S2 = " << a1S2->getId() << endl;
     
         for (Arete *a2 : *aretes)
         {            
-            const Sommet* a2S1 = a1->getSommetsPair().sommet1;
-            const Sommet* a2S2 = a1->getSommetsPair().sommet2;
-                        
-            cout << "a2S1 = " << a2S1->getId() << " a2S2 = " << a2S2->getId() << endl;
+            const Sommet* a2S1 = a2->getSommetsPair().sommet1;
+            const Sommet* a2S2 = a2->getSommetsPair().sommet2;
 
             if ((a1S1 == a2S2) 
              && (a1S2 == a2S1) 
              && (a1->getPoids() == a2->getPoids()))
-            { // do nothing       
+            { 
+                isFound = true;       
             }            
-        } 
-        cout << "I've created mirror-arete ! ";                       
-
-        newAretes->push_back(new Arete(a1S2, a1S1, a1->getPoids())); 
-        cout << "newS1 = " << a1S2->getId() 
-             << " newS2 = " << a1S1->getId() 
-             << " poids = " << a1->getPoids() << endl;
-                      
+        }
+        if (!isFound)
+        {
+            newAretes->push_back(new Arete(a1S2, a1S1, a1->getPoids()));            
+        }   
+        isFound = false;    
     }    
     
     this->setAretes(newAretes);  

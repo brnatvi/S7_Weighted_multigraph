@@ -27,12 +27,12 @@ class Arete {
         Arete(const Sommet *s1, const Sommet *s2, int poids);
         Arete(Arete *a); // "a partir d'une arete existante" => pas de poids
 
-    public :  
         Arete::Pair getSommetsPair() const;
         int getPoids() const;
         int getRef() const;
         void setPoids(int poids);
         void setRef(int nbRef);
+        static int getCounterAretes();
 
 //        void incrReference();
 //        void decrReference();

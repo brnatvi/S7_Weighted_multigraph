@@ -16,13 +16,16 @@ class Graph {
         list<Sommet*> *listSommets;
         int nbReference;
 
+        void cloneList(list<Arete*> *src, list<Arete*> *dest); 
+
     public :
         Graph(list<Arete *> *listAretes, list<Sommet *> *listSommets);
         Graph(Graph *oldGraph);        
 
         int getId() const;
         list<Arete*> * getAretes() const;
-        list<Sommet*> * getSommets() const;                
+        list<Sommet*> * getSommets() const;  
+        static int getCounterGraphs();              
         void setAretes(list<Arete*> *list);
         void setSommets(list<Sommet*> *list);
                                         
@@ -40,7 +43,7 @@ class Graph {
         // retourne le poids de G, soit la somme des poids de ses aretes
         int poids(); 
 
-        void cloneList(list<Arete*> *src, list<Arete*> *dest);  
+         
         
         void symetrise();
 };

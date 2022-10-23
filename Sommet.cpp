@@ -20,6 +20,7 @@ std::string Sommet::getNom() const { return nom; }
 void Sommet::setNom(string nom) { nom = nom; }
 int Sommet::getNbReference() const { return nbReference; }
 void Sommet::setNbReference(int nbRef) { nbReference = nbRef; }
+int Sommet::getCounterSommets() { return counterSommets; };
 
 // print
 ostream &operator << (ostream &out, Sommet &x) {     
