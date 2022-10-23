@@ -25,13 +25,17 @@ Arete::Arete(const Sommet *s1, const Sommet *s2, int poids){
 
 // TODO test
 Arete::Arete(Arete *a) {
-    *this = a;
+    this->sommet1 = a->getSommetsPair().sommet1;
+    this->sommet2 = a->getSommetsPair().sommet2;
+    this->poids = a->getPoids();
+    ++counterArete;
+    this->nbReference = 0;
 }
 
 // getters/setters
 int Arete::getPoids() const { return poids; }
 int Arete::getRef() const { return nbReference; }
-void Arete::setPoids(int poids) { poids = poids; }
+void Arete::setPoids(int poids) { this->poids = poids; }
 void Arete::setRef(int nbRef) { nbReference = nbRef; }
 
 Arete::Pair Arete::getSommetsPair() const {

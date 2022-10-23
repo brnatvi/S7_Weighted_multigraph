@@ -23,14 +23,14 @@ int main(){
     Arete ar2{"A", "B", 2};
     // CD poids 3
     Arete ar3{&c, &d1, 3};
-    // CD poids 1 -> erreur de segmentation core dumped
+    // CD poids 1 -> erreur poids
+    Arete ar4{&ar3};
+    ar3.setPoids(1); // ne change pas 
 
-    // Arete ar4{&ar3};
-    // ar4.setPoids(1);
     cout << ar1 << endl;
     cout << ar2 << endl;
     cout << ar3 << endl;
-    // cout << ar4 << endl;
+    cout << ar4 << endl;
 
     list<Arete*> lAr = {};
     // lAr -> (AB); (CD)
