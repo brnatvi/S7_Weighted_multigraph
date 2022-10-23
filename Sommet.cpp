@@ -1,5 +1,5 @@
 #include "Sommet.hpp"
-
+#include <typeinfo>
 
 // counterGraph initialisation
 int Sommet::counterSommets = 0;
@@ -23,7 +23,15 @@ void Sommet::setNbReference(int nbRef) { nbReference = nbRef; }
 
 // print
 ostream &operator << (ostream &out, Sommet &x) {     
-    cout << "sommet " << x.getNom();    
+    // cout << "type of sommet" << std::type_info(&x) << " " << x.getNom();
+    cout << x.getNom();
+    return out;
+
+};
+
+ostream &operator << (ostream &out, const Sommet &x) {     
+    // cout << "type of sommet" << std::type_info(&x) << " " << x.getNom();
+    cout << x.getNom();
     return out;
 
 };

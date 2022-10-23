@@ -77,13 +77,15 @@ void Graph::ajoute_arete(Arete *a)
 // "Il peut y avoir plusieurs aretes (chacune avec son poids propre) avec les memes extremites" => pas besoin de verification dans liste aretes
 void Graph::ajoute_arete(Sommet *s1, Sommet *s2, int p){  
     Arete *a = new Arete(s1, s2, p);
+    // ajoute_sommet verifie deja presence de sommet dans liste
+    ajoute_sommet(s1);
+    ajoute_sommet(s2);
     this->getAretes()->push_back(a);  
 }
 
 void Graph::ajoute_arete(string nom1, string nom2, int poids) {
     Sommet *s1 = new Sommet(nom1);
     Sommet *s2 = new Sommet(nom2);
-    // ajoute_sommet verifie deja presence de sommet dans liste
     ajoute_sommet(s1);
     ajoute_sommet(s2);
     Arete *a = new Arete(s1, s2, poids);

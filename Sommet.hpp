@@ -29,5 +29,6 @@ class Sommet {
 };
 
 ostream &operator << (ostream &out, Sommet &x);
+ostream &operator << (ostream &out, const Sommet &x);
 
 #endif

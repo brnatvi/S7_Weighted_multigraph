@@ -1,4 +1,5 @@
 #include "Arete.hpp"
+#include <typeinfo>
 
 // counterArete initialisation
 int Arete::counterArete = 0;
@@ -34,6 +35,7 @@ void Arete::setPoids(int poids) { poids = poids; }
 void Arete::setRef(int nbRef) { nbReference = nbRef; }
 
 Arete::Pair Arete::getSommetsPair() const {
+    
     return {this->sommet1, this->sommet2};
 }
 
@@ -42,7 +44,7 @@ Arete::Pair Arete::getSommetsPair() const {
 ostream &operator << (ostream &out, Arete &x)
 {     
     Arete::Pair sommets = x.getSommetsPair();
-    cout << "arete " << sommets.sommet1->getNom() << " - " << sommets.sommet2->getNom() << " ayant poids = " << x.getPoids();    
+    cout << "arete " << *(sommets.sommet1) << " - " << *(sommets.sommet2) << " ayant poids = " << x.getPoids();    
     return out;
 
 };
