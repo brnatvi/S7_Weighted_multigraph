@@ -5,16 +5,18 @@
 int Graph::counterGraphs = 0;
 
 // constructors             
-Graph::Graph(list<Arete *> *lAretes, list<Sommet *> *lSommets): listAretes{lAretes}, listSommets{lSommets} 
+Graph::Graph(list<Arete *> *lAretes, list<Sommet *> *lSommets): listAretes{nullptr}, listSommets{nullptr} 
 {  
-    this->id = ++counterGraphs; 
+    setSommets(lSommets);
+    setAretes(lAretes);    
+    this->id = ++counterGraphs;
     this->nbReference = 0;
 }
 
-Graph::Graph(Graph *oldGraph)
+Graph::Graph(Graph *oldGraph): listAretes{nullptr}, listSommets{nullptr} 
 {
-    this->listAretes = oldGraph->getAretes();
-    this->listSommets = oldGraph->getSommets();
+    setSommets(oldGraph->getSommets());
+    setAretes(oldGraph->getAretes());    
     this->id = ++counterGraphs;
     this->nbReference = 0;
 }        
@@ -26,16 +28,39 @@ list<Arete*> * Graph::getAretes() const { return this->listAretes; }
 list<Sommet*> * Graph::getSommets() const { return this->listSommets; }
 int Graph::getCounterGraphs() { return counterGraphs; };
 
-void Graph::setAretes(list<Arete*> *l) 
+void Graph::setAretes(list<Arete*> *l)
 {
-    // TODO destroy old listAretes ?
-    this->listAretes = l;    
+    if (this->listAretes)
+    {        
+        this->listAretes->clear();        
+        delete this->listAretes;        
+    }
+    
+    this->listAretes = new std::list<Arete*>();
+    for (auto el:*l)
+    {
+        Arete *newA = new Arete(el);
+        this->listAretes->push_back(newA);
+        //TODO: add newA to garbage collector
+    }    
 }
                       
 void Graph::setSommets(list<Sommet*> *l)
 {       
-    // TODO destroy old listSommets ?
-    this->listSommets = l;    
+    if (this->listSommets)
+    {
+        this->listSommets->clear();
+        delete this->listSommets;
+    }
+
+    this->listSommets = new std::list<Sommet*>();
+
+    for (Sommet* el : *l)
+    {             
+        Sommet *newS = new Sommet(el);        
+        this->listSommets->push_back(newS);
+        //TODO: add newS to garbage collector
+    }       
 }
 
 
@@ -45,7 +70,7 @@ void Graph::setSommets(list<Sommet*> *l)
 void Graph::ajoute_sommet(Sommet *s)
 {        
     list<Sommet*> *l = this->getSommets();
-    for (Sommet *el : *l)
+    for (auto el : *l)
     {
         if (s == el)
         {
@@ -57,7 +82,10 @@ void Graph::ajoute_sommet(Sommet *s)
 
 // pas de verification dans liste des sommets car nom d'un sommet n'est pas un identifiant
 void Graph::ajoute_sommet(string nom) {  
-    Sommet *newOne = new Sommet(nom);
+
+    Sommet *newOne = new Sommet(nom);    
+    //TODO: add newOne to garbage collector
+
     this->getSommets()->push_back(newOne);
 } 
 
@@ -65,7 +93,7 @@ void Graph::ajoute_sommet(string nom) {
 void Graph::ajoute_arete(Arete *a)
 {
     list<Arete*> *l = this->getAretes();
-    for (Arete *el : *l)
+    for (auto el : *l)
     {
         if (el == a) 
         {
@@ -78,6 +106,8 @@ void Graph::ajoute_arete(Arete *a)
 // "Il peut y avoir plusieurs aretes (chacune avec son poids propre) avec les memes extremites" => pas besoin de verification dans liste aretes
 void Graph::ajoute_arete(Sommet *s1, Sommet *s2, int p){  
     Arete *a = new Arete(s1, s2, p);
+    //TODO: add a to garbage collector
+
     // ajoute_sommet verifie deja presence de sommet dans liste
     ajoute_sommet(s1);
     ajoute_sommet(s2);
@@ -87,6 +117,7 @@ void Graph::ajoute_arete(Sommet *s1, Sommet *s2, int p){
 void Graph::ajoute_arete(string nom1, string nom2, int poids) {
     Sommet *s1 = new Sommet(nom1);
     Sommet *s2 = new Sommet(nom2);
+    //TODO: add s1 s2 to garbage collector
     ajoute_sommet(s1);
     ajoute_sommet(s2);
     Arete *a = new Arete(s1, s2, poids);
@@ -136,7 +167,9 @@ void Graph::symetrise(){
         }
         if (!isFound)
         {
-            newAretes->push_back(new Arete(a1S2, a1S1, a1->getPoids()));            
+            Arete *newOne = new Arete(a1S2, a1S1, a1->getPoids());
+            newAretes->push_back(newOne);   
+            //TODO: add newOne to garbage collector         
         }   
         isFound = false;    
     }    
@@ -149,12 +182,12 @@ ostream &operator << (ostream &out, Graph &x)
 {     
     list<Sommet *> *sommets = x.getSommets();
     list<Arete *> *aretes = x.getAretes();
-
-    cout << "graph "<< x.getId() << " avec les sommets : " ;
+   
+    cout << "graph "<< x.getId() << " avec les sommets : " ;   
     for (Sommet *n : *sommets)
     {       
         cout << n->getNom() << " ";    
-    }
+    }   
     cout << endl;
     cout << "et les aretes : " << endl;
     for (Arete *n : *aretes)
@@ -163,6 +196,5 @@ ostream &operator << (ostream &out, Graph &x)
              << " - " << n->getSommetsPair().sommet2->getNom()
              << " (" << n->getPoids() << ") " << endl;    
     }    
-    return out;    
-   
+    return out;       
 }

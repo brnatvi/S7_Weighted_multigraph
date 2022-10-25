@@ -18,7 +18,7 @@ Arete::Arete(string nom1, string nom2, int poids) {
 Arete::Arete(const Sommet *s1, const Sommet *s2, int poids){
     this->sommet1 = s1;
     this->sommet2 = s2;
-    this->poids = poids;
+    this->poids = poids;    
     this->nbReference = 0;
     counterArete ++;
 }
@@ -28,8 +28,8 @@ Arete::Arete(Arete *a) {
     this->sommet1 = a->getSommetsPair().sommet1;
     this->sommet2 = a->getSommetsPair().sommet2;
     this->poids = a->getPoids();
-    ++counterArete;
     this->nbReference = 0;
+    counterArete ++;
 }
 
 // getters/setters
@@ -39,8 +39,7 @@ void Arete::setPoids(int poids) { this->poids = poids; }
 void Arete::setRef(int nbRef) { nbReference = nbRef; }
 int Arete::getCounterAretes() { return counterArete; };
 
-Arete::Pair Arete::getSommetsPair() const {
-    
+Arete::Pair Arete::getSommetsPair() const {    
     return {this->sommet1, this->sommet2};
 }
 
@@ -51,7 +50,6 @@ ostream &operator << (ostream &out, Arete &x)
     Arete::Pair sommets = x.getSommetsPair();
     cout << "arete " << *(sommets.sommet1) << " - " << *(sommets.sommet2) << " ayant poids = " << x.getPoids();    
     return out;
-
 };
 
 

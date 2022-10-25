@@ -51,7 +51,7 @@ int main(){
     cout << endl << "Tests #3 - setPoids()" << endl;
     Arete ar5{&ar3};
     int aldPoids = ar3.getPoids();
-    int newPoids = 15;
+    int newPoids = rand()%100;;
     ar3.setPoids(newPoids);
     if ((ar3.getPoids() != newPoids) || (ar5.getPoids() != aldPoids)) { cout << TEST_FAIL << endl; }
     else { cout << TEST_PASS << endl;    }
@@ -60,20 +60,20 @@ int main(){
 
    
     cout << endl << "Tests #4 - Creation des Graphs" << endl;    
-    cout << "test de constructeur avec une liste des Sommets et une liste des Areres" << endl;
-    list<Arete*> lAr = {};
-    lAr.push_back(&ar1);
-    lAr.push_back(&ar2);
-    lAr.push_back(&ar3);
-    lAr.push_back(&ar4);
+    cout << "test de constructeur avec une liste des Sommets et une liste des Aretes" << endl;
+    list<Arete*> *lAr = new list<Arete*>();
+    lAr->push_back(&ar1);
+    lAr->push_back(&ar2);
+    lAr->push_back(&ar3);
+    lAr->push_back(&ar4);
 
-    list<Sommet*> lSommet = {};    
-    lSommet.push_back(&a);
-    lSommet.push_back(&b);
-    lSommet.push_back(&c);
-    lSommet.push_back(&d1);
+    list<Sommet*> *lSommet = new list<Sommet*>();    
+    lSommet->push_back(&a);
+    lSommet->push_back(&b);
+    lSommet->push_back(&c);
+    lSommet->push_back(&d1);
 
-    Graph g1{&lAr, &lSommet};
+    Graph g1{lAr, lSommet};   
     cout << g1 << endl;
 
     cout << "test de constructeur par copie" << endl;
