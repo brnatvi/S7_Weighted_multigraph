@@ -1,5 +1,6 @@
 
 #include "Graph.hpp"
+#include <typeinfo>
 
 // counterGraph initialisation
 int Graph::counterGraphs = 0;
@@ -39,8 +40,8 @@ void Graph::setAretes(list<Arete*> *l)
     this->listAretes = new std::list<Arete*>();
     for (auto el:*l)
     {
-        Arete *newA = new Arete(el);
-        this->listAretes->push_back(newA);
+        // Arete *newA = new Arete(el);
+        this->listAretes->push_back(el);
         //TODO: add newA to garbage collector
     }    
 }
@@ -57,8 +58,8 @@ void Graph::setSommets(list<Sommet*> *l)
 
     for (Sommet* el : *l)
     {             
-        Sommet *newS = new Sommet(el);        
-        this->listSommets->push_back(newS);
+        // Sommet *newS = new Sommet(el);        
+        this->listSommets->push_back(el);
         //TODO: add newS to garbage collector
     }       
 }
@@ -75,7 +76,7 @@ void Graph::ajoute_sommet(Sommet *s)
         if (s == el)
         {
             return;
-        }        
+        }       
     }
     this->getSommets()->push_back(s);
 } 

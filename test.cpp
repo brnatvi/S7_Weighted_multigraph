@@ -87,19 +87,34 @@ int main(){
 
     cout << endl << "Tests #5 - ajoute_sommet()" << endl;
     //TODO
-
+    unsigned int size_sommets = g1.getSommets()->size();
+    g1.ajoute_sommet(&a);
+    g1.ajoute_sommet(&d2);
+    g1.ajoute_sommet(&e1);
+    if(g1.getSommets()->size() != size_sommets + 2) { cout << TEST_FAIL << endl; }
+    else { cout << TEST_PASS << endl; }
+    cout << g1 << endl;
 
     cout << endl << "Tests #6 - ajoute_arete()" << endl;
     //TODO
+    unsigned int size_aretes = g1.getAretes()->size();
+    size_sommets = g1.getSommets()->size();
+    g1.ajoute_arete(&ar1);
+    g1.ajoute_arete(&ar5);
+    g1.ajoute_arete(&e1, &e2, 2);
+    if(g1.getAretes()->size() != size_aretes + 2 || g1.getSommets()->size() != size_sommets + 1) { cout << TEST_FAIL << endl;  }
+    else { cout << TEST_PASS << endl; }
+    cout << g1 << endl;
 
-
-    cout << endl << "Tests #5 - symetrise()" << endl;  
+    cout << endl << "Tests #8 - symetrise()" << endl;  
     g1.symetrise();
     cout << g1 << endl;
 
 
-    cout << endl << "Tests #8 - poids()" << endl;
+    cout << endl << "Tests #9 - poids()" << endl;
     //TODO
+    int graph_weight = g1.poids();
+    cout << "Poids du graphe " << graph_weight << endl;
 
 
 /*
