@@ -5,8 +5,8 @@
 // counterGraph initialisation
 int Graph::counterGraphs = 0;
 
-// constructors             
-Graph::Graph(list<Arete *> *lAretes, list<Sommet *> *lSommets): listAretes{nullptr}, listSommets{nullptr} 
+// constructors 
+Graph::Graph(list<Arete *> *lAretes, list<Sommet *> *lSommets) : listAretes{nullptr}, listSommets{nullptr} 
 {  
     setSommets(lSommets);
     setAretes(lAretes);    
@@ -40,7 +40,6 @@ void Graph::setAretes(list<Arete*> *l)
     this->listAretes = new std::list<Arete*>();
     for (auto el:*l)
     {
-        // Arete *newA = new Arete(el);
         this->listAretes->push_back(el);
         //TODO: add newA to garbage collector
     }    
@@ -58,7 +57,6 @@ void Graph::setSommets(list<Sommet*> *l)
 
     for (Sommet* el : *l)
     {             
-        // Sommet *newS = new Sommet(el);        
         this->listSommets->push_back(el);
         //TODO: add newS to garbage collector
     }       
