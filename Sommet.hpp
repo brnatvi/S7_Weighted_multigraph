@@ -14,19 +14,19 @@ class Sommet {
         int nbReference;
 
     public :
-        Sommet(string nom);
-        Sommet(Sommet *s);
+        Sommet(const string &nom);
+        Sommet(const Sommet *s);
+        ~Sommet();
 
-        int getId() const;
-        static int getCounterSommets();
-        string getNom() const; 
-        int getNbReference() const;
-        void setNom(string nom);
-        void setNbReference(int nbRef);
+        static int getCounterSommets() { return counterSommets; };
 
- //       int incrReference();
-//        int decrReference();
+        //AZH: do we need that? it will change name for all pointers at once!
+        const string & getNom() const { return nom; }
 
+        int getId() const {return id; }
+        void setNom(const string &nom) { this->nom = nom; }
+        int getNbReference() const { return nbReference; }
+        void setNbReference(int nbRef) { nbReference = nbRef; }
 };
 
 ostream &operator << (ostream &out, Sommet &x);
