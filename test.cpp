@@ -39,7 +39,7 @@ int main(){
 
     p = rand()%100;
     cout << "Test de constructeur par noms : B - C (poids " << p << ")" << endl;        
-    Arete ar3{"B", "C", p};
+    Arete ar3{"B", "C", p}; 
     poidsTotal += p;
     cout << ar3 << endl;
     
@@ -127,5 +127,6 @@ int main(){
     else { cout << TEST_PASS << endl << endl; }  
 
     Graph acm = g1.kruskal(); 
+    cout << "ARBRE COUVRANT MINIMAL" << endl;
     cout << acm << endl; 
 }

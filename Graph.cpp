@@ -1,6 +1,7 @@
 
 #include "Graph.hpp"
 #include <typeinfo>
+#include <iostream>
 
 #include "GC.hpp"
 
@@ -12,8 +13,8 @@ Graph::Graph(list<Arete *> *lAretes, list<Sommet *> *lSommets) : listAretes{null
 {  
     setSommets(lSommets);
     setAretes(lAretes);    
-    // this->id = ++counterGraphs;
-    // this->nbReference = 0;
+    this->id = ++counterGraphs;
+    this->nbReference = 0;
 }
 
 Graph::Graph(Graph *oldGraph): listAretes{nullptr}, listSommets{nullptr} 
@@ -40,6 +41,8 @@ void Graph::setAretes(list<Arete*> *l)
     {
         for (auto el : *l)
         {
+            ajoute_sommet((Sommet*)(el->getSommetsPair().sommet1));
+            ajoute_sommet((Sommet*)(el->getSommetsPair().sommet2));
             this->listAretes->push_back(el);
         }    
     }
@@ -77,11 +80,11 @@ void Graph::ajoute_sommet(Sommet *s)
     {
         if (s == el)
         {
-            cout << "DONT ADD SOMMET " << *s << endl;
+            // cout << "DONT ADD SOMMET " << *s << endl;
             return;
         }       
     }
-    cout << "ADD_SOMMET " << *s << endl;
+    // cout << "ADD_SOMMET " << *s << endl;
     this->getSommets()->push_back(s);
 } 
 
@@ -142,10 +145,10 @@ bool Graph::hasSymetric(Arete *a, list<Arete*> *aretes){
 list<Arete*>* Graph::getAretesNoSym(){
     list<Arete*> *l = this->getAretes();
     list<Arete*> *no_sym = new list<Arete*>();
-    cout << "ARETES_NO_SYM" << endl;
+    // cout << "ARETES_NO_SYM" << endl;
     for(auto elt: *l){ 
         if(!hasSymetric(elt, no_sym)){
-            cout << *(elt) << endl;
+            // cout << *(elt) << endl;
             no_sym->push_back(elt);
         }
     }
@@ -245,24 +248,19 @@ Graph Graph::kruskal(){
         ens_sommets->push_back(e1);
     }
     list<Arete*> *sorted_aretes = trie();
-    cout << "SORTED ARETES" << endl;
-    for(auto pp: *sorted_aretes){
-        cout << *pp << endl;
-    }
+    // cout << "SORTED ARETES" << endl;
+    // for(auto pp: *sorted_aretes){
+    //     cout << *pp << endl;
+    // }
     for(auto p : *sorted_aretes){
-        int s1 = find(p->getSommetsPair().sommet1, ens_sommets);
-        int s2 = find(p->getSommetsPair().sommet2, ens_sommets); 
-        cout << "sorted_artes " << *p << " " << s1 << " " << s2 <<  endl;
+        // int s1 = find(p->getSommetsPair().sommet1, ens_sommets);
+        // int s2 = find(p->getSommetsPair().sommet2, ens_sommets); 
+        // cout << "sorted_artes " << *p << " " << s1 << " " << s2 <<  endl;
         if(find(p->getSommetsPair().sommet1, ens_sommets) != find(p->getSommetsPair().sommet2, ens_sommets)){
             ret->push_back(p);
             do_union(p->getSommetsPair().sommet1, p->getSommetsPair().sommet2, ens_sommets);
         }
-    }
-    cout << "ACM details" << endl;
-    for(auto toto : *ret){
-        cout << *(toto) << endl;
-    }
-    
+    }    
     return {ret, l};
 
     
@@ -289,44 +287,3 @@ ostream &operator << (ostream &out, Graph &x)
     }    
     return out;       
 }
-
-
-/*
-void Graph::kruskal(){
-    list<Graph::Etiquette> ens_sommets = {};
-    list<Sommet*> *l = this->getSommets();
-    list<Arete*> *ret = new list<Arete*>();
-    cout << "push_back" << endl;
-    for(auto el : *l){
-        Etiquette e1 = creerEnsemble(el);
-        ens_sommets.push_back(e1);
-        cout << *(e1.v) << ": " << e1.v << endl;
-    }
-    cout << "Ens_sommets" << endl;
-    for(auto a : ens_sommets){
-        cout << &a << endl;
-        cout << *(a.v) << ": " << a.v << endl;
-        cout << "\n" << endl;
-    }
-    
-    list<Arete*> *sorted_aretes = trie();
-    cout << "SORTED ARETES" << endl;
-    for(auto p : *sorted_aretes){
-        int s1 = find(p->getSommetsPair().sommet1, ens_sommets);
-        int s2 = find(p->getSommetsPair().sommet2, ens_sommets); 
-        cout << s1 << " " << s2 << endl;
-        
-        if(find(p->getSommetsPair().sommet1, ens_sommets) != find(p->getSommetsPair().sommet2, ens_sommets)){
-            ret->push_back(p);
-            ens_sommets = do_union(p->getSommetsPair().sommet1, p->getSommetsPair().sommet2, ens_sommets);
-        }
-        
-        cout << "FINAL" << endl;
-        for(auto toto : *ret){
-            cout << *(toto) << endl;
-        }
-        
-    }   
-    
-}
-*/
