@@ -3,11 +3,18 @@
 
 #include <iostream>
 #include <cstring>
+#include <list>
 #include "Arete.hpp"
 
 using namespace std;
 
 class Graph {
+
+    public :
+        struct Etiquette {
+            const Sommet *v;
+            int id;
+        };
 
     private :
         static int counterGraphs;
@@ -17,6 +24,8 @@ class Graph {
         int nbReference;
 
         void cloneList(list<Arete*> *src, list<Arete*> *dest); 
+
+    
 
     public :
         Graph(list<Arete *> *listAretes, list<Sommet *> *listSommets);
@@ -42,10 +51,18 @@ class Graph {
 
         // retourne le poids de G, soit la somme des poids de ses aretes
         int poids(); 
-
-         
         
+        // rajoute aretes symetriques si besoin
         void symetrise();
+
+        // algorithme de kruskal 
+        void kruskal(); // return Graph
+        Etiquette creerEnsemble(Sommet *v);
+        list<Arete*>* trie();
+        int find(const Sommet* u, list<Etiquette> ens_sommets);
+        list<Etiquette> do_union(const Sommet* u, const Sommet* v, list<Etiquette> ens_sommets) ;
+        
+        
 };
 
 ostream &operator << (ostream &out, Graph &x);

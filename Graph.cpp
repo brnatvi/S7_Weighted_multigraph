@@ -174,6 +174,85 @@ void Graph::symetrise(){
     }    
     
     this->setAretes(newAretes);  
+}
+
+Graph::Etiquette Graph::creerEnsemble(Sommet *u) {
+    return {u, u->getId()};
+}
+
+list<Arete*>* Graph::trie(){
+    list<Arete*> *l = this->getAretes();
+    l->sort([](const Arete* a, const Arete* b) { return a->getPoids() < b->getPoids(); });
+    return l;
+}
+
+int Graph::find(const Sommet* u, list<Etiquette> ens_sommets){
+    for(auto elt : ens_sommets){
+        cout << "FIND" << endl;
+        cout << &elt << endl;
+        if(u == elt.v) {
+            return elt.id;
+        }
+    }
+    return -1;
+}
+
+// retourne ens_sommets
+
+list<Graph::Etiquette> Graph::do_union(const Sommet* u, const Sommet* v, list<Etiquette> ens_sommets) {
+    int u_id = find(u, ens_sommets);
+    int v_id = find(v, ens_sommets);
+    cout << "DO_UNION" << endl;
+    for(auto elt : ens_sommets){
+        if(elt.id == v_id){
+            elt.id = u_id;
+        }
+        
+    }
+    for(auto t : ens_sommets){
+        cout << *(t.v) << ": " << t.id << endl;
+        
+    }
+    return ens_sommets;
+}
+
+
+void Graph::kruskal(){
+    list<Graph::Etiquette> ens_sommets = {};
+    list<Sommet*> *l = this->getSommets();
+    list<Arete*> *ret = new list<Arete*>();
+    cout << "push_back" << endl;
+    for(auto el : *l){
+        Etiquette e1 = creerEnsemble(el);
+        ens_sommets.push_back(e1);
+        cout << *(e1.v) << ": " << e1.v << endl;
+    }
+    cout << "Ens_sommets" << endl;
+    for(auto a : ens_sommets){
+        cout << &a << endl;
+        cout << *(a.v) << ": " << a.v << endl;
+        cout << "\n" << endl;
+    }
+    
+    list<Arete*> *sorted_aretes = trie();
+    cout << "SORTED ARETES" << endl;
+    for(auto p : *sorted_aretes){
+        int s1 = find(p->getSommetsPair().sommet1, ens_sommets);
+        int s2 = find(p->getSommetsPair().sommet2, ens_sommets); 
+        cout << s1 << " " << s2 << endl;
+        
+        if(find(p->getSommetsPair().sommet1, ens_sommets) != find(p->getSommetsPair().sommet2, ens_sommets)){
+            ret->push_back(p);
+            do_union(p->getSommetsPair().sommet1, p->getSommetsPair().sommet2, ens_sommets);
+        }
+        
+        cout << "FINAL" << endl;
+        for(auto toto : *ret){
+            cout << *(toto) << endl;
+        }
+        
+    }   
+    
 };
 
 // print

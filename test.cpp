@@ -18,7 +18,7 @@ int main(){
     Sommet e1{"E"};
     Sommet e2{"E"};
     Sommet z{"Z"};
-
+/*
     cout << endl << "Tests #1 - Creation des Sommets" << endl << "8 Sommets ont ete cree" << endl;
     if (Sommet::getCounterSommets() != 8) { cout << TEST_FAIL << endl; }
     else { cout << TEST_PASS << endl;    }
@@ -115,7 +115,28 @@ int main(){
     //TODO
     int graph_weight = g1.poids();
     cout << "Poids du graphe " << graph_weight << endl;
+*/
+    list<Arete*> *lArBis = new list<Arete*>();
+    Arete q1{&a , &b, 10};
+    Arete q2{&b , &c, 5};
+    Arete q3{&c , &d1, 6};
+    Arete q4{&d1 , &a, 3};
+    Arete q5{&a , &c, 4};
+    lArBis->push_back(&q1);
+    lArBis->push_back(&q2);
+    lArBis->push_back(&q3);
+    lArBis->push_back(&q4);
+    lArBis->push_back(&q5);
 
+    list<Sommet*> *lSommetBis = new list<Sommet*>();    
+    lSommetBis->push_back(&a);
+    lSommetBis->push_back(&b);
+    lSommetBis->push_back(&c);
+    lSommetBis->push_back(&d1);
+    Graph g{lArBis, lSommetBis};
+    g.kruskal();
+    
+    
 
 /*
     
