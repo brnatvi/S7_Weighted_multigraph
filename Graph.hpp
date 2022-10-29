@@ -49,18 +49,20 @@ class Graph {
         void ajoute_arete(Sommet *s1, Sommet *s2, int p); 
         void ajoute_arete(string nom1, string nom2, int p);
 
-        // retourne le poids de G, soit la somme des poids de ses aretes
+        // retourne le poids de G, soit la somme des poids de ses aretes en excluant les aretes symetriques
+        bool hasSymetric(Arete *a, list<Arete*> *aretes);
+        list<Arete*>* getAretesNoSym();
         int poids(); 
         
         // rajoute aretes symetriques si besoin
         void symetrise();
 
         // algorithme de kruskal 
-        void kruskal(); // return Graph
-        Etiquette creerEnsemble(Sommet *v);
+        Graph kruskal(); // return Graph
+        Etiquette* creerEnsemble(Sommet *v);
         list<Arete*>* trie();
-        int find(const Sommet* u, list<Etiquette> ens_sommets);
-        list<Etiquette> do_union(const Sommet* u, const Sommet* v, list<Etiquette> ens_sommets) ;
+        int find(const Sommet* u, list<Etiquette*> *ens_sommets);
+        void do_union(const Sommet* u, const Sommet* v, list<Etiquette*> *ens_sommets) ;
         
         
 };
