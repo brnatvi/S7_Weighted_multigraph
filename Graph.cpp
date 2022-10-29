@@ -2,6 +2,8 @@
 #include "Graph.hpp"
 #include <typeinfo>
 
+#include "GC.hpp"
+
 // counterGraph initialisation
 int Graph::counterGraphs = 0;
 
@@ -10,8 +12,8 @@ Graph::Graph(list<Arete *> *lAretes, list<Sommet *> *lSommets) : listAretes{null
 {  
     setSommets(lSommets);
     setAretes(lAretes);    
-    this->id = ++counterGraphs;
-    this->nbReference = 0;
+    // this->id = ++counterGraphs;
+    // this->nbReference = 0;
 }
 
 Graph::Graph(Graph *oldGraph): listAretes{nullptr}, listSommets{nullptr} 
@@ -22,12 +24,7 @@ Graph::Graph(Graph *oldGraph): listAretes{nullptr}, listSommets{nullptr}
     this->nbReference = 0;
 }        
 
-// getters/setters
-
-int Graph::getId() const { return this->id; }   
-list<Arete*> * Graph::getAretes() const { return this->listAretes; }
-list<Sommet*> * Graph::getSommets() const { return this->listSommets; }
-int Graph::getCounterGraphs() { return counterGraphs; };
+// setters
 
 void Graph::setAretes(list<Arete*> *l)
 {
@@ -38,11 +35,15 @@ void Graph::setAretes(list<Arete*> *l)
     }
     
     this->listAretes = new std::list<Arete*>();
-    for (auto el:*l)
+
+    if (l)
     {
-        this->listAretes->push_back(el);
-        //TODO: add newA to garbage collector
-    }    
+        for (auto el : *l)
+        {
+            this->listAretes->push_back(el);
+        }    
+    }
+    
 }
                       
 void Graph::setSommets(list<Sommet*> *l)
@@ -55,11 +56,14 @@ void Graph::setSommets(list<Sommet*> *l)
 
     this->listSommets = new std::list<Sommet*>();
 
-    for (Sommet* el : *l)
-    {             
-        this->listSommets->push_back(el);
-        //TODO: add newS to garbage collector
-    }       
+    if (l)
+    {
+        for (Sommet* el : *l)
+        {             
+            this->listSommets->push_back(el);
+        }       
+    }
+       
 }
 
 
@@ -83,11 +87,10 @@ void Graph::ajoute_sommet(Sommet *s)
 
 // pas de verification dans liste des sommets car nom d'un sommet n'est pas un identifiant
 void Graph::ajoute_sommet(string nom) {  
-
     Sommet *newOne = new Sommet(nom);    
-    //TODO: add newOne to garbage collector
-
+    GC::getGCInstance()->addSommet(newOne);
     this->getSommets()->push_back(newOne);
+
 } 
 
 // verification pour eviter d'ajouter une arete deja presente dans la liste                                                           
@@ -107,7 +110,7 @@ void Graph::ajoute_arete(Arete *a)
 // "Il peut y avoir plusieurs aretes (chacune avec son poids propre) avec les memes extremites" => pas besoin de verification dans liste aretes
 void Graph::ajoute_arete(Sommet *s1, Sommet *s2, int p){  
     Arete *a = new Arete(s1, s2, p);
-    //TODO: add a to garbage collector
+    GC::getGCInstance()->addArete(a);
 
     // ajoute_sommet verifie deja presence de sommet dans liste
     ajoute_sommet(s1);
@@ -118,10 +121,10 @@ void Graph::ajoute_arete(Sommet *s1, Sommet *s2, int p){
 void Graph::ajoute_arete(string nom1, string nom2, int poids) {
     Sommet *s1 = new Sommet(nom1);
     Sommet *s2 = new Sommet(nom2);
-    //TODO: add s1 s2 to garbage collector
     ajoute_sommet(s1);
     ajoute_sommet(s2);
     Arete *a = new Arete(s1, s2, poids);
+    GC::getGCInstance()->addArete(a);
     this->getAretes()->push_back(a);
 }
 
@@ -194,7 +197,7 @@ void Graph::symetrise(){
         {
             Arete *newOne = new Arete(a1S2, a1S1, a1->getPoids());
             newAretes->push_back(newOne);   
-            //TODO: add newOne to garbage collector         
+            GC::getGCInstance()->addArete(newOne);
         }   
         isFound = false;    
     }    
@@ -265,7 +268,7 @@ Graph Graph::kruskal(){
     
 };
 
-// print
+// ==========================  print ================================================================
 ostream &operator << (ostream &out, Graph &x)
 {     
     list<Sommet *> *sommets = x.getSommets();

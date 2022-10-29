@@ -4,7 +4,6 @@
 #include "Sommet.hpp"
 #include <list>
 
-
 using namespace std;
 
 class Arete {
@@ -16,26 +15,28 @@ class Arete {
 
     private :
         static int counterArete;
-        // pourquoi enlever const ici ?
         const Sommet *sommet1; // "une arete est definie, une fois pour toutes, par deux sommets, ses extremites" => const
         const Sommet *sommet2;
-        int poids; // "peut etre modifie" => no const
+        int poids; 
         int nbReference;
+        string sommet1_nom; // copie de nom pour etre sure qu'il toujours existe apres sommet1 destruction
+        string sommet2_nom; // copie de nom pour etre sure qu'il toujours existe apres sommet1 destruction
 
     public :
-        Arete(string nom1, string nom2, int poids);
+        Arete(const string &nom1, const string &nom2, int poids);
         Arete(const Sommet *s1, const Sommet *s2, int poids);
-        Arete(Arete *a); // "a partir d'une arete existante" => pas de poids
+        Arete(const Arete *a); // "a partir d'une arete existante" => pas de poids
+        ~Arete();
 
-        Arete::Pair getSommetsPair() const;
-        int getPoids() const;
-        int getRef() const;
-        void setPoids(int poids);
-        void setRef(int nbRef);
-        static int getCounterAretes();
+        // ===================  getters / setters ===========================================================
+        static int getCounterAretes()   { return counterArete; };
 
-//        void incrReference();
-//        void decrReference();
+        int getPoids() const     { return poids; }
+        int getRef() const       { return nbReference; }
+        void setPoids(int poids) { this->poids = poids; }
+        void setRef(int nbRef)   { nbReference = nbRef; }
+        Arete::Pair getSommetsPair() const {return {this->sommet1, this->sommet2};}
+
 };
 
 ostream &operator << (ostream &out, Arete &x);

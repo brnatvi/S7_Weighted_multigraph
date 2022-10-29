@@ -23,19 +23,25 @@ class Graph {
         list<Sommet*> *listSommets;
         int nbReference;
 
+        // copy one list to another one (for intern usage)
         void cloneList(list<Arete*> *src, list<Arete*> *dest); 
-
-    
 
     public :
         Graph(list<Arete *> *listAretes, list<Sommet *> *listSommets);
-        Graph(Graph *oldGraph);        
+        // why not const ?
+        Graph(Graph *oldGraph);  
 
-        int getId() const;
-        list<Arete*> * getAretes() const;
-        list<Sommet*> * getSommets() const;  
-        static int getCounterGraphs();              
+        // getters
+        static int getCounterGraphs() { return counterGraphs; };  
+
+        int getId() const { return this->id; }
+        list<Arete*> * getAretes()  const { return this->listAretes; }
+        list<Sommet*> * getSommets() const { return this->listSommets; }
+       
+
+        // attach new list of Aretes* to graph 
         void setAretes(list<Arete*> *list);
+        // attach new list of Aretes* to graph
         void setSommets(list<Sommet*> *list);
                                         
         // étant donné soit un sommet existant, soit une étiquette, crée
