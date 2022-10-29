@@ -177,7 +177,10 @@ void Graph::symetrise(){
 }
 
 Graph::Etiquette Graph::creerEnsemble(Sommet *u) {
-    return {u, u->getId()};
+    cout << "CREER_ENSEMBLE "<< *u << ": "<< u << endl;
+    Etiquette e = {u, u->getId()};
+    cout << &e << endl ;
+    return e;
 }
 
 list<Arete*>* Graph::trie(){
@@ -218,6 +221,50 @@ list<Graph::Etiquette> Graph::do_union(const Sommet* u, const Sommet* v, list<Et
 
 
 void Graph::kruskal(){
+    list<Graph::Etiquette*> *ens_sommets = new list<Graph::Etiquette*>();
+    list<Sommet*> *l = this->getSommets();
+    list<Arete*> *ret = new list<Arete*>();
+    cout << "PUSH_BACK" << endl;
+    
+    for(auto el : *l){
+        Etiquette e1 = creerEnsemble(el);
+        ens_sommets->emplace_back(&e1);
+        cout << &e1 << endl;
+        cout << *(e1.v) << ": " << e1.v << endl;
+    }
+    cout << "ENS_SOMMETS" << endl;
+    for(auto a : *ens_sommets){
+        cout << "Etiquette " << a << endl;
+        cout << "Sommet " << *(a->v) << ": " << a->v << endl;
+        cout << "\n" << endl;
+    } 
+};
+
+// print
+ostream &operator << (ostream &out, Graph &x)
+{     
+    list<Sommet *> *sommets = x.getSommets();
+    list<Arete *> *aretes = x.getAretes();
+   
+    cout << "graph "<< x.getId() << " avec les sommets : " ;   
+    for (Sommet *n : *sommets)
+    {       
+        cout << n->getNom() << " ";    
+    }   
+    cout << endl;
+    cout << "et les aretes : " << endl;
+    for (Arete *n : *aretes)
+    {
+        cout << n->getSommetsPair().sommet1->getNom()
+             << " - " << n->getSommetsPair().sommet2->getNom()
+             << " (" << n->getPoids() << ") " << endl;    
+    }    
+    return out;       
+}
+
+
+/*
+void Graph::kruskal(){
     list<Graph::Etiquette> ens_sommets = {};
     list<Sommet*> *l = this->getSommets();
     list<Arete*> *ret = new list<Arete*>();
@@ -243,7 +290,7 @@ void Graph::kruskal(){
         
         if(find(p->getSommetsPair().sommet1, ens_sommets) != find(p->getSommetsPair().sommet2, ens_sommets)){
             ret->push_back(p);
-            do_union(p->getSommetsPair().sommet1, p->getSommetsPair().sommet2, ens_sommets);
+            ens_sommets = do_union(p->getSommetsPair().sommet1, p->getSommetsPair().sommet2, ens_sommets);
         }
         
         cout << "FINAL" << endl;
@@ -253,26 +300,5 @@ void Graph::kruskal(){
         
     }   
     
-};
-
-// print
-ostream &operator << (ostream &out, Graph &x)
-{     
-    list<Sommet *> *sommets = x.getSommets();
-    list<Arete *> *aretes = x.getAretes();
-   
-    cout << "graph "<< x.getId() << " avec les sommets : " ;   
-    for (Sommet *n : *sommets)
-    {       
-        cout << n->getNom() << " ";    
-    }   
-    cout << endl;
-    cout << "et les aretes : " << endl;
-    for (Arete *n : *aretes)
-    {
-        cout << n->getSommetsPair().sommet1->getNom()
-             << " - " << n->getSommetsPair().sommet2->getNom()
-             << " (" << n->getPoids() << ") " << endl;    
-    }    
-    return out;       
 }
+*/
