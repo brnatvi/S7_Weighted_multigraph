@@ -39,10 +39,12 @@ void Graph::setAretes(list<Arete*> *l)
 
     if (l)
     {
-        for (auto el : *l)
-        {
-            ajoute_sommet((Sommet*)(el->getSommetsPair().sommet1));
-            ajoute_sommet((Sommet*)(el->getSommetsPair().sommet2));
+        for (auto el : *l) {
+            const Arete::Pair el_pair = el->getSommetsPair();
+
+            ajoute_sommet((Sommet*)(el_pair.sommet1));
+            ajoute_sommet((Sommet*)(el_pair.sommet2));
+
             this->listAretes->push_back(el);
         }    
     }
@@ -166,7 +168,7 @@ int Graph::poids(){
             p += e->getPoids();
         }
     }
-    
+    delete no_sym;
     return p;
 }
 
@@ -210,8 +212,8 @@ void Graph::symetrise(){
         }   
         isFound = false;    
     }    
-    
-    this->setAretes(newAretes);  
+
+    this->setAretes(newAretes); 
 }
 
 Graph::Etiquette* Graph::creerEnsemble(Sommet *u) {
@@ -264,8 +266,8 @@ Graph Graph::kruskal(){
             ret->push_back(p);
             do_union(s1, s2, ens_sommets);
         }
-    }    
-    return {ret, l};   
+    }
+    return {ret, l};
 };
 
 // ==========================  print ================================================================
