@@ -23,13 +23,33 @@ class Graph {
         list<Sommet*> *listSommets;
         int nbReference;
 
+    // ------------ intern usage functions -------------------------------
+
+        void deleteListPointers(list<void *> *l);
+
+        // attach new list of Aretes* to graph 
+        void setAretes(list<Arete*> *list);
+        // attach new list of Aretes* to graph
+        void setSommets(list<Sommet*> *list);
+
         // copy one list to another one (for intern usage)
         void cloneList(list<Arete*> *src, list<Arete*> *dest); 
 
+        // pour poids()
+        // retourne le poids de G, soit la somme des poids de ses aretes en excluant les aretes symetriques
+        bool hasSymetric(Arete *a, list<Arete*> *aretes);
+        list<Arete*>* getAretesNoSym();
+
+        // pour kruskal()
+        Etiquette* creerEnsemble(Sommet *v);
+        list<Arete*>* trie();
+        int find(const Sommet* u, list<Etiquette*> *ens_sommets);
+        void doUnion(const Sommet* u, const Sommet* v, list<Etiquette*> *ens_sommets) ;
+
     public :
         Graph(list<Arete *> *listAretes, list<Sommet *> *listSommets);
-        // why not const ?
-        Graph(Graph *oldGraph);  
+        Graph(const Graph *oldGraph);  
+        ~Graph();
 
         // getters
         static int getCounterGraphs() { return counterGraphs; };  
@@ -37,12 +57,6 @@ class Graph {
         int getId() const { return this->id; }
         list<Arete*> * getAretes()  const { return this->listAretes; }
         list<Sommet*> * getSommets() const { return this->listSommets; }
-       
-
-        // attach new list of Aretes* to graph 
-        void setAretes(list<Arete*> *list);
-        // attach new list of Aretes* to graph
-        void setSommets(list<Sommet*> *list);
                                         
         // étant donné soit un sommet existant, soit une étiquette, crée
         // le sommet dans ce dernier cas et ajoute le sommet au graphe ;
@@ -55,21 +69,13 @@ class Graph {
         void ajoute_arete(Sommet *s1, Sommet *s2, int p); 
         void ajoute_arete(string nom1, string nom2, int p);
 
-        // retourne le poids de G, soit la somme des poids de ses aretes en excluant les aretes symetriques
-        bool hasSymetric(Arete *a, list<Arete*> *aretes);
-        list<Arete*>* getAretesNoSym();
         int poids(); 
         
         // rajoute aretes symetriques si besoin
         void symetrise();
 
         // algorithme de kruskal 
-        Graph kruskal(); // return Graph
-        Etiquette* creerEnsemble(Sommet *v);
-        list<Arete*>* trie();
-        int find(const Sommet* u, list<Etiquette*> *ens_sommets);
-        void do_union(const Sommet* u, const Sommet* v, list<Etiquette*> *ens_sommets) ;
-        
+        Graph kruskal();           
         
 };
 

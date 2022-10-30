@@ -17,7 +17,7 @@ Graph::Graph(list<Arete *> *lAretes, list<Sommet *> *lSommets) : listAretes{null
     this->nbReference = 0;
 }
 
-Graph::Graph(Graph *oldGraph): listAretes{nullptr}, listSommets{nullptr} 
+Graph::Graph(const Graph *oldGraph): listAretes{nullptr}, listSommets{nullptr} 
 {
     setSommets(oldGraph->getSommets());
     setAretes(oldGraph->getAretes());    
@@ -25,7 +25,17 @@ Graph::Graph(Graph *oldGraph): listAretes{nullptr}, listSommets{nullptr}
     this->nbReference = 0;
 }        
 
-// setters
+Graph::~Graph()
+{
+    this->listAretes->clear();
+    delete (this->listAretes);
+    this->listSommets->clear();
+    delete (this->listSommets);
+    
+    cout << "Graph     " << this << " est detruit" << endl;
+}
+
+//========================== setters ======================================================
 
 void Graph::setAretes(list<Arete*> *l)
 {
@@ -35,7 +45,7 @@ void Graph::setAretes(list<Arete*> *l)
         delete this->listAretes;        
     }
     
-    this->listAretes = new std::list<Arete*>();
+    this->listAretes = new std::list<Arete*>();     // free memory in ~Graph()
 
     if (l)
     {
@@ -69,8 +79,7 @@ void Graph::setSommets(list<Sommet*> *l)
        
 }
 
-
-// methods
+// ===================== ajoute_arete() et ajoute_sommet() ==================================
 
 // verification pour eviter d'ajouter un sommet deja present dans la liste
 void Graph::ajoute_sommet(Sommet *s)
@@ -80,20 +89,17 @@ void Graph::ajoute_sommet(Sommet *s)
     {
         if (s == el)
         {
-            // cout << "DONT ADD SOMMET " << *s << endl;
             return;
         }       
     }
-    // cout << "ADD_SOMMET " << *s << endl;
-    this->getSommets()->push_back(s);
+    this->getSommets()->push_back(s);    
 } 
 
 // pas de verification dans liste des sommets car nom d'un sommet n'est pas un identifiant
 void Graph::ajoute_sommet(string nom) {  
-    Sommet *newOne = new Sommet(nom);    
+    Sommet *newOne = new Sommet(nom);             // free memory by GC
     GC::getGCInstance()->addSommet(newOne);
     this->getSommets()->push_back(newOne);
-
 } 
 
 // verification pour eviter d'ajouter une arete deja presente dans la liste                                                           
@@ -112,7 +118,7 @@ void Graph::ajoute_arete(Arete *a)
 
 // "Il peut y avoir plusieurs aretes (chacune avec son poids propre) avec les memes extremites" => pas besoin de verification dans liste aretes
 void Graph::ajoute_arete(Sommet *s1, Sommet *s2, int p){  
-    Arete *a = new Arete(s1, s2, p);
+    Arete *a = new Arete(s1, s2, p);                // free memory by GC
     GC::getGCInstance()->addArete(a);
 
     // ajoute_sommet verifie deja presence de sommet dans liste
@@ -122,47 +128,18 @@ void Graph::ajoute_arete(Sommet *s1, Sommet *s2, int p){
 }
 
 void Graph::ajoute_arete(string nom1, string nom2, int poids) {
-    Sommet *s1 = new Sommet(nom1);
-    Sommet *s2 = new Sommet(nom2);
+    Sommet *s1 = new Sommet(nom1);                   // free memory by GC  
+    Sommet *s2 = new Sommet(nom2);                   // free memory by GC 
+    GC::getGCInstance()->addSommet(s1);
+    GC::getGCInstance()->addSommet(s2); 
     ajoute_sommet(s1);
     ajoute_sommet(s2);
-    Arete *a = new Arete(s1, s2, poids);
-    GC::getGCInstance()->addArete(a);
+    Arete *a = new Arete(s1, s2, poids);             // free memory by GC
+    GC::getGCInstance()->addArete(a); 
     this->getAretes()->push_back(a);
 }
 
-bool Graph::hasSymetric(Arete *a, list<Arete*> *aretes){
-    for(auto elt: *aretes){
-        if(elt->getSommetsPair().sommet1 == a->getSommetsPair().sommet2 && 
-        elt->getSommetsPair().sommet2 == a->getSommetsPair().sommet1 &&
-        elt->getPoids() == a->getPoids()){
-            return true;
-        }
-    }
-    return false;
-}
-
-list<Arete*>* Graph::getAretesNoSym(){
-    list<Arete*> *l = this->getAretes();
-    list<Arete*> *no_sym = new list<Arete*>();
-    // cout << "ARETES_NO_SYM" << endl;
-    for(auto elt: *l){ 
-        if(!hasSymetric(elt, no_sym)){
-            // cout << *(elt) << endl;
-            no_sym->push_back(elt);
-        }
-    }
-    return no_sym;
-}
-
-int Graph::poids(){
-    int p = 0;
-    list<Arete*> *no_sym = getAretesNoSym();
-    for(auto e: *no_sym){
-        p += e->getPoids();
-    }
-    return p;
-}
+// ======================== symetrise() ===============================================
 
 void Graph::cloneList(list<Arete *> *src, list<Arete *> *dest)
 {
@@ -174,8 +151,8 @@ void Graph::cloneList(list<Arete *> *src, list<Arete *> *dest)
 
 
 void Graph::symetrise(){
-    list<Arete *> *aretes = this->getAretes();
-    list<Arete *> *newAretes = new list<Arete *>;
+    list<Arete *> *aretes = this->getAretes();              // free memory in setAretes()
+    list<Arete *> *newAretes = new list<Arete *>;           // free memory in ~Grapth()
     cloneList(aretes, newAretes);
     bool isFound = false;
         
@@ -198,7 +175,7 @@ void Graph::symetrise(){
         }
         if (!isFound)
         {
-            Arete *newOne = new Arete(a1S2, a1S1, a1->getPoids());
+            Arete *newOne = new Arete(a1S2, a1S1, a1->getPoids());      // free memory by GC
             newAretes->push_back(newOne);   
             GC::getGCInstance()->addArete(newOne);
         }   
@@ -208,14 +185,15 @@ void Graph::symetrise(){
     this->setAretes(newAretes);  
 }
 
-Graph::Etiquette* Graph::creerEnsemble(Sommet *u) {
-    Etiquette *e = new Etiquette{u, u->getId()};
-    return e;
-}
+// ======================== kruskal() ===============================================
+
 
 list<Arete*>* Graph::trie(){
-    list<Arete*> *l = getAretesNoSym();
-    l->sort([](const Arete* a, const Arete* b) { return a->getPoids() < b->getPoids(); });
+    list<Arete*> *l = getAretesNoSym();                // alloc memory - free memory in kruskal()
+    l->sort([](const Arete* a, const Arete* b) 
+    { 
+        return a->getPoids() < b->getPoids(); 
+    });
     return l;
 }
 
@@ -228,7 +206,7 @@ int Graph::find(const Sommet* u, list<Etiquette*> *ens_sommets){
     return -1;
 }
 
-void Graph::do_union(const Sommet* u, const Sommet* v, list<Etiquette*> *ens_sommets) {
+void Graph::doUnion(const Sommet* u, const Sommet* v, list<Etiquette*> *ens_sommets) {
     int u_id = find(u, ens_sommets);
     int v_id = find(v, ens_sommets);
     for(auto elt : *ens_sommets){
@@ -239,15 +217,15 @@ void Graph::do_union(const Sommet* u, const Sommet* v, list<Etiquette*> *ens_som
 }
 
 Graph Graph::kruskal(){
-    list<Graph::Etiquette*> *ens_sommets = new list<Graph::Etiquette*>();
+    list<Graph::Etiquette*> *ens_sommets = new list<Graph::Etiquette*>();   // free memory below
     list<Sommet*> *l = this->getSommets();
-    list<Arete*> *ret = new list<Arete*>();
+    list<Arete*> *ret = new list<Arete*>();                             // free memory by GC
     
     for(auto el : *l){
-        Etiquette* e1 = creerEnsemble(el);
+        Etiquette* e1 = new Etiquette{el, el->getId()};                // free memory below
         ens_sommets->push_back(e1);
     }
-    list<Arete*> *sorted_aretes = trie();
+    list<Arete*> *sorted_aretes = trie();                              // alloc memory - free memory below
     // cout << "SORTED ARETES" << endl;
     // for(auto pp: *sorted_aretes){
     //     cout << *pp << endl;
@@ -256,15 +234,65 @@ Graph Graph::kruskal(){
         // int s1 = find(p->getSommetsPair().sommet1, ens_sommets);
         // int s2 = find(p->getSommetsPair().sommet2, ens_sommets); 
         // cout << "sorted_artes " << *p << " " << s1 << " " << s2 <<  endl;
-        if(find(p->getSommetsPair().sommet1, ens_sommets) != find(p->getSommetsPair().sommet2, ens_sommets)){
+        if(find(p->getSommetsPair().sommet1, ens_sommets) != find(p->getSommetsPair().sommet2, ens_sommets))
+        {
             ret->push_back(p);
-            do_union(p->getSommetsPair().sommet1, p->getSommetsPair().sommet2, ens_sommets);
+            doUnion(p->getSommetsPair().sommet1, p->getSommetsPair().sommet2, ens_sommets);
         }
-    }    
-    return {ret, l};
+    } 
 
-    
+    for (auto el : *ens_sommets)
+    {
+        delete(el);
+    }
+    ens_sommets->clear();
+    delete ens_sommets;
+
+    sorted_aretes->clear();
+    delete sorted_aretes;
+
+    return Graph{ret, l};    
 };
+
+// ======================== poids() ===============================================
+
+bool Graph::hasSymetric(Arete *a, list<Arete*> *aretes){
+    for (auto elt: *aretes){
+        if (elt->getSommetsPair().sommet1 == a->getSommetsPair().sommet2 && 
+            elt->getSommetsPair().sommet2 == a->getSommetsPair().sommet1 &&
+            elt->getPoids() == a->getPoids())
+            {
+                return true;
+            }
+    }
+    return false;
+}
+
+list<Arete*>* Graph::getAretesNoSym(){
+    list<Arete*> *l = this->getAretes();
+    list<Arete*> *no_sym = new list<Arete*>();                  // free memory in poids() and kruskal()
+    for (auto elt: *l){ 
+        if(!hasSymetric(elt, no_sym)){
+            no_sym->push_back(elt);
+        }
+    }
+    return no_sym;
+}
+
+int Graph::poids(){
+    int p = 0;
+    list<Arete*> *no_sym = getAretesNoSym();                    // alloc memory - free memory below
+
+    for (auto e: *no_sym){
+        p += e->getPoids();
+    }
+
+    no_sym->clear();
+    delete no_sym;
+
+    return p;
+}
+
 
 // ==========================  print ================================================================
 ostream &operator << (ostream &out, Graph &x)

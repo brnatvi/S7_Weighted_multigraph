@@ -93,7 +93,7 @@ int main(){
 
     cout << endl << "Tests #5 - ajoute_sommet()" << endl;
     cout << "trois sommets seraint ajouteés: les deux neuves (D, E) et l'un déjà present dans le graph (A)" << endl;
-    unsigned int size_sommets = g1.getSommets()->size();
+    size_t size_sommets = g1.getSommets()->size();
     g1.ajoute_sommet(&a);
     g1.ajoute_sommet(&d2);
     g1.ajoute_sommet(&e1);
@@ -103,7 +103,7 @@ int main(){
 
     cout << endl << "Tests #6 - ajoute_arete()" << endl;
     cout << "trois aretes seraint ajoutees:  B-C et E-E(boucle) et l'une déjà presente dans le graph (A-B)" << endl;
-    unsigned int size_aretes = g1.getAretes()->size();
+    size_t size_aretes = g1.getAretes()->size();
     size_sommets = g1.getSommets()->size();
     g1.ajoute_arete(&ar1);
     g1.ajoute_arete(&ar5);
