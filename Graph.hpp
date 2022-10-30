@@ -25,8 +25,6 @@ class Graph {
 
     // ------------ intern usage functions -------------------------------
 
-        void deleteListPointers(list<void *> *l);
-
         // attach new list of Aretes* to graph 
         void setAretes(list<Arete*> *list);
         // attach new list of Aretes* to graph

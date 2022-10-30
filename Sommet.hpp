@@ -10,8 +10,7 @@ class Sommet {
     private :
         static int counterSommets;
         int id;
-        string nom;
-        int nbReference;
+        string nom;        
 
     public :
         Sommet(const string &nom);
@@ -19,16 +18,11 @@ class Sommet {
         ~Sommet();
 
         static int getCounterSommets() { return counterSommets; };
-
-        //AZH: do we need that? it will change name for all pointers at once!
+  
         const string & getNom() const { return nom; }
 
         int getId() const {return id; }
-        void setNom(const string &nom) { this->nom = nom; }
-        int getNbReference() const { return nbReference; }
-        void setNbReference(int nbRef) { nbReference = nbRef; }
-
-
+        void setNom(const string &nom) { this->nom = nom; } 
 };
 
 ostream &operator << (ostream &out, Sommet &x);

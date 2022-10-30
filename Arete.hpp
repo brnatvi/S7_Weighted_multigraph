@@ -17,8 +17,7 @@ class Arete {
         static int counterArete;
         const Sommet *sommet1; // "une arete est definie, une fois pour toutes, par deux sommets, ses extremites" => const
         const Sommet *sommet2;
-        int poids; 
-        int nbReference;
+        int poids;     
         string sommet1_nom; // copie de nom pour etre sure qu'il toujours existe apres sommet1 destruction
         string sommet2_nom; // copie de nom pour etre sure qu'il toujours existe apres sommet1 destruction
 
@@ -31,10 +30,8 @@ class Arete {
         // ===================  getters / setters ===========================================================
         static int getCounterAretes()   { return counterArete; };
 
-        int getPoids() const     { return poids; }
-        int getRef() const       { return nbReference; }
-        void setPoids(int poids) { this->poids = poids; }
-        void setRef(int nbRef)   { nbReference = nbRef; }
+        int getPoids() const     { return poids; }        
+        void setPoids(int poids) { this->poids = poids; }       
         Arete::Pair getSommetsPair() const {return {this->sommet1, this->sommet2};}
 
 };

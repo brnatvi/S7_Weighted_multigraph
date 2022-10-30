@@ -67,13 +67,13 @@ int main(){
    
     cout << endl << "Tests #4 - Creation des Graphs" << endl;    
     cout << "test de constructeur avec une liste des Sommets et une liste des Aretes" << endl;
-    list<Arete*> *lAr = new list<Arete*>();
+    list<Arete*> *lAr = new list<Arete*>();                         // free memory in ~Graph()
     lAr->push_back(&ar1);
     lAr->push_back(&ar2);
     lAr->push_back(&ar3);
     lAr->push_back(&ar4);
 
-    list<Sommet*> *lSommet = new list<Sommet*>();    
+    list<Sommet*> *lSommet = new list<Sommet*>();                   // free memory in ~Graph()
     lSommet->push_back(&a);
     lSommet->push_back(&b);
     lSommet->push_back(&c);

@@ -9,14 +9,12 @@ int Sommet::counterSommets = 0;
 // ==============  constructors / destructor =======================================================
 Sommet::Sommet(const string &nom) { 
     this->nom = nom;
-    this->id = ++counterSommets;
-    this->nbReference = 0;
+    this->id = ++counterSommets;    
 }
 
 Sommet::Sommet(const Sommet *s) {
     this->nom = s->getNom();
-    this->id = ++counterSommets;
-    this->nbReference = 0;
+    this->id = ++counterSommets;    
 }
 
 Sommet::~Sommet(){

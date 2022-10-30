@@ -20,8 +20,7 @@ Arete::Arete(const string &nom1, const string &nom2, int poids) {
     this->sommet1 = s1;
     this->sommet2 = s2;
     this->poids = poids; 
-
-    this->nbReference = 0;
+   
     counterArete ++;
 }
 
@@ -29,8 +28,7 @@ Arete::Arete(const Sommet *s1, const Sommet *s2, int poids){
     this->sommet1 = s1;
     this->sommet2 = s2;
     this->poids = poids; 
-
-    this->nbReference = 0;
+    
     counterArete ++;
 
     sommet1_nom = s1->getNom();
@@ -42,8 +40,7 @@ Arete::Arete(const Arete *a) {
     this->sommet1 = a->getSommetsPair().sommet1;
     this->sommet2 = a->getSommetsPair().sommet2;
     this->poids = a->getPoids();
-
-    this->nbReference = 0;
+       
     counterArete ++;
 
     sommet1_nom = sommet1->getNom();
