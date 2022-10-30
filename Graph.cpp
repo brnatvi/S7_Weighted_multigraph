@@ -76,16 +76,14 @@ void Graph::setSommets(list<Sommet*> *l)
 void Graph::ajoute_sommet(Sommet *s)
 {        
     list<Sommet*> *l = this->getSommets();
-    for (auto el : *l)
-    {
-        if (s == el)
-        {
-            // cout << "DONT ADD SOMMET " << *s << endl;
-            return;
-        }       
+    if(l){
+        for(auto el : *l){
+            if(s == el){
+                return;
+            }
+        }
+        l->push_back(s);
     }
-    // cout << "ADD_SOMMET " << *s << endl;
-    this->getSommets()->push_back(s);
 } 
 
 // pas de verification dans liste des sommets car nom d'un sommet n'est pas un identifiant
@@ -100,14 +98,14 @@ void Graph::ajoute_sommet(string nom) {
 void Graph::ajoute_arete(Arete *a)
 {
     list<Arete*> *l = this->getAretes();
-    for (auto el : *l)
-    {
-        if (el == a) 
-        {
-            return;
+    if(l){
+        for(auto el: *l){
+            if(a == el) {
+                return;
+            }
         }
+        l->push_back(a);
     }
-    this->getAretes()->push_back(a);
 }
 
 // "Il peut y avoir plusieurs aretes (chacune avec son poids propre) avec les memes extremites" => pas besoin de verification dans liste aretes
@@ -132,35 +130,43 @@ void Graph::ajoute_arete(string nom1, string nom2, int poids) {
 }
 
 bool Graph::hasSymetric(Arete *a, list<Arete*> *aretes){
-    for(auto elt: *aretes){
-        if(elt->getSommetsPair().sommet1 == a->getSommetsPair().sommet2 && 
-        elt->getSommetsPair().sommet2 == a->getSommetsPair().sommet1 &&
-        elt->getPoids() == a->getPoids()){
-            return true;
+    if(aretes){
+        for(auto elt: *aretes){
+            const Arete::Pair elt_pair = elt->getSommetsPair();
+            const Arete::Pair a_pair = a->getSommetsPair();
+            if(elt_pair.sommet1 == a_pair.sommet2 && elt_pair.sommet2 == a_pair.sommet1 &&
+            elt->getPoids() == a->getPoids()){
+                return true;
+            }
         }
     }
+    
     return false;
 }
 
 list<Arete*>* Graph::getAretesNoSym(){
     list<Arete*> *l = this->getAretes();
     list<Arete*> *no_sym = new list<Arete*>();
-    // cout << "ARETES_NO_SYM" << endl;
-    for(auto elt: *l){ 
-        if(!hasSymetric(elt, no_sym)){
-            // cout << *(elt) << endl;
-            no_sym->push_back(elt);
+    if(l){
+        for(auto elt: *l){ 
+            if(!hasSymetric(elt, no_sym)){
+                no_sym->push_back(elt);
+            }
         }
     }
+    
     return no_sym;
 }
 
 int Graph::poids(){
     int p = 0;
     list<Arete*> *no_sym = getAretesNoSym();
-    for(auto e: *no_sym){
-        p += e->getPoids();
+    if(no_sym){
+        for(auto e: *no_sym){
+            p += e->getPoids();
+        }
     }
+    
     return p;
 }
 
@@ -247,23 +253,19 @@ Graph Graph::kruskal(){
         Etiquette* e1 = creerEnsemble(el);
         ens_sommets->push_back(e1);
     }
+
     list<Arete*> *sorted_aretes = trie();
-    // cout << "SORTED ARETES" << endl;
-    // for(auto pp: *sorted_aretes){
-    //     cout << *pp << endl;
-    // }
+    
     for(auto p : *sorted_aretes){
-        // int s1 = find(p->getSommetsPair().sommet1, ens_sommets);
-        // int s2 = find(p->getSommetsPair().sommet2, ens_sommets); 
-        // cout << "sorted_artes " << *p << " " << s1 << " " << s2 <<  endl;
-        if(find(p->getSommetsPair().sommet1, ens_sommets) != find(p->getSommetsPair().sommet2, ens_sommets)){
+        const Sommet* s1 = p->getSommetsPair().sommet1;
+        const Sommet* s2 = p->getSommetsPair().sommet2;
+
+        if(find(s1, ens_sommets) != find(s2, ens_sommets)){
             ret->push_back(p);
-            do_union(p->getSommetsPair().sommet1, p->getSommetsPair().sommet2, ens_sommets);
+            do_union(s1, s2, ens_sommets);
         }
     }    
-    return {ret, l};
-
-    
+    return {ret, l};   
 };
 
 // ==========================  print ================================================================
