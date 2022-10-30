@@ -10,7 +10,7 @@ using namespace std;
 
 class Graph {
 
-    public :
+    private :
         struct Etiquette {
             const Sommet *v;
             int id;
@@ -39,7 +39,6 @@ class Graph {
         list<Arete*>* getAretesNoSym();
 
         // pour kruskal()
-        Etiquette* creerEnsemble(Sommet *v);
         list<Arete*>* trie();
         int find(const Sommet* u, list<Etiquette*> *ens_sommets);
         void doUnion(const Sommet* u, const Sommet* v, list<Etiquette*> *ens_sommets) ;

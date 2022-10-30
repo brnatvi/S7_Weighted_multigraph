@@ -79,7 +79,7 @@ int main(){
     lSommet->push_back(&c);
     lSommet->push_back(&d1);
 
-    Graph g1{lAr, lSommet};   
+    Graph g1{lAr, lSommet};  
     cout << g1 << endl;
 
     cout << "test de constructeur par copie" << endl;

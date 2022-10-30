@@ -48,8 +48,9 @@ void Graph::setAretes(list<Arete *> *l)
     {
         for (auto el : *l)
         {
-            ajoute_sommet((Sommet *)(el->getSommetsPair().sommet1));
-            ajoute_sommet((Sommet *)(el->getSommetsPair().sommet2));
+            const Arete::Pair el_pair = el->getSommetsPair();
+            ajoute_sommet((Sommet *)(el_pair.sommet1));
+            ajoute_sommet((Sommet *)(el_pair.sommet2));
             this->listAretes->push_back(el);
         }
     }
@@ -80,11 +81,14 @@ void Graph::setSommets(list<Sommet *> *l)
 void Graph::ajoute_sommet(Sommet *s)
 {
     list<Sommet *> *l = this->getSommets();
-    for (auto el : *l)
-    {
-        if (s == el) { return; }
+    if(l){
+        for (auto el : *l)
+        {
+            if (s == el) { return; }
+        }
+        l->push_back(s);
     }
-    this->getSommets()->push_back(s);
+    
 }
 
 // pas de verification dans liste des sommets car nom d'un sommet n'est pas un identifiant
@@ -227,14 +231,14 @@ Graph Graph::kruskal()
 
     list<Arete *> *sorted_aretes = trie();
 
-    for (auto p : *sorted_aretes)
+    for (auto el : *sorted_aretes)
     {
-        const Sommet *s1 = p->getSommetsPair().sommet1;
-        const Sommet *s2 = p->getSommetsPair().sommet2;
+        const Sommet *s1 = el->getSommetsPair().sommet1;
+        const Sommet *s2 = el->getSommetsPair().sommet2;
 
         if (find(s1, ens_sommets) != find(s2, ens_sommets))
         {
-            ret->push_back(p);
+            ret->push_back(el);
             doUnion(s1, s2, ens_sommets);
         }
     }
@@ -256,11 +260,14 @@ Graph Graph::kruskal()
 
 bool Graph::hasSymetric(Arete *a, list<Arete *> *aretes)
 {
-    for (auto elt : *aretes)
+    for (auto el : *aretes)
     {
-        if (elt->getSommetsPair().sommet1 == a->getSommetsPair().sommet2 &&
-            elt->getSommetsPair().sommet2 == a->getSommetsPair().sommet1 &&
-            elt->getPoids() == a->getPoids())
+        const Arete::Pair el_pair = el->getSommetsPair();
+        const Arete::Pair a_pair = a->getSommetsPair();
+
+        if (el_pair.sommet1 == a_pair.sommet2 &&
+            el_pair.sommet2 == a_pair.sommet1 &&
+            el->getPoids() == a->getPoids())
         {
             return true;
         }
@@ -272,11 +279,11 @@ list<Arete *> *Graph::getAretesNoSym()
 {
     list<Arete *> *l = this->getAretes();
     list<Arete *> *no_sym = new list<Arete *>(); // free memory in poids() and kruskal()
-    for (auto elt : *l)
+    for (auto el : *l)
     {
-        if (!hasSymetric(elt, no_sym))
+        if (!hasSymetric(el, no_sym))
         {
-            no_sym->push_back(elt);
+            no_sym->push_back(el);
         }
     }
     return no_sym;
@@ -287,9 +294,9 @@ int Graph::poids()
     int p = 0;
     list<Arete *> *no_sym = getAretesNoSym(); // alloc memory - free memory below
 
-    for (auto e : *no_sym)
+    for (auto el : *no_sym)
     {
-        p += e->getPoids();
+        p += el->getPoids();
     }
 
     no_sym->clear();
