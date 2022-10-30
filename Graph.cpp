@@ -25,10 +25,11 @@ Graph::Graph(const Graph *oldGraph) : listAretes{nullptr}, listSommets{nullptr}
 
 Graph::~Graph()
 {
-    this->listAretes->clear();
+    this->listAretes->clear();                          // AZ
     delete (this->listAretes);
-    this->listSommets->clear();
+    this->listSommets->clear();                         // AZ
     delete (this->listSommets);
+    counterGraphs --;
     cout << "Graph     " << this << " est detruit" << endl;
 }
 
@@ -36,13 +37,13 @@ Graph::~Graph()
 
 void Graph::setAretes(list<Arete *> *l)
 {
-    if (this->listAretes)
+    if (this->listAretes)                                   // free old list
     {
         this->listAretes->clear();
         delete this->listAretes;
     }
 
-    this->listAretes = new std::list<Arete *>(); // free memory in ~Graph()
+    this->listAretes = new std::list<Arete *>();            // free memory in ~Graph()
 
     if (l)
     {
@@ -58,13 +59,13 @@ void Graph::setAretes(list<Arete *> *l)
 
 void Graph::setSommets(list<Sommet *> *l)
 {
-    if (this->listSommets)
+    if (this->listSommets)                              // free old list
     {
         this->listSommets->clear();
         delete this->listSommets;
     }
 
-    this->listSommets = new std::list<Sommet *>();
+    this->listSommets = new std::list<Sommet *>();      // free memory in ~Graph()
 
     if (l)
     {

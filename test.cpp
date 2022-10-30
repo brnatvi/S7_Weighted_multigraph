@@ -67,14 +67,14 @@ int main(){
    
     cout << endl << "Tests #4 - Creation des Graphs" << endl;    
     cout << "test de constructeur avec une liste des Sommets et une liste des Aretes" << endl;
-    list<Arete*> *lAr = new list<Arete*>();                         // free memory in ~Graph()
-    lAr->push_back(&ar1);
+    list<Arete*> *lAr = new list<Arete*>();                         // free memory in ~Graph() - TAG "AZ"
+    lAr->push_back(&ar1);                                           // mais Valgring ne le vois pas et affiche l'erreur
     lAr->push_back(&ar2);
     lAr->push_back(&ar3);
     lAr->push_back(&ar4);
 
-    list<Sommet*> *lSommet = new list<Sommet*>();                   // free memory in ~Graph()
-    lSommet->push_back(&a);
+    list<Sommet*> *lSommet = new list<Sommet*>();                   // free memory in ~Graph() - TAG "AZ"
+    lSommet->push_back(&a);                                         // mais Valgring ne le vois pas et affiche l'erreur
     lSommet->push_back(&b);
     lSommet->push_back(&c);
     lSommet->push_back(&d1);
